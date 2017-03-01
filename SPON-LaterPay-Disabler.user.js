@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SPON LaterPay Disabler
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Decodiert SPON LaterPay PayWall
 // @updateURL    https://raw.githubusercontent.com/DerVO/browserScripts/master/SPON-LaterPay-Disabler.user.js
 // @downloadURL  https://raw.githubusercontent.com/DerVO/browserScripts/master/SPON-LaterPay-Disabler.user.js
@@ -23,6 +23,10 @@ https://www.reddit.com/r/de/comments/4qx2vn/spiegelplus_was_ein_quatsch/
 Paste Guru - completely anonymous - Host your text anonymously . Share your codes & scripts. PasteGuru.com
 http://pasteguru.com/22298
 
+"Verschlüsselung" von SpiegelOnline-Bezahlartikeln extrem einfach knackbar [D. Kriesel]
+(insb Kommentare mit Infos zu falschen Sonderzeichen)
+http://www.dkriesel.com/blog/2016/0703_verschluesselung_von_spiegelonline-bezahlartikeln_extrem_einfach_knackbar#comment_1076
+
 */
 
 (function() {
@@ -43,8 +47,14 @@ http://pasteguru.com/22298
                     for (var i = 0; i < obfuscated.length; i++) {
                         var char = obfuscated.charCodeAt(i);
                         var newchar = char;
-                        if (char > 33) {
-                            newchar--;
+                        if (char == 177) {
+                            newchar=38; // & statt °
+                        } else if (char == 178) {
+                            newchar=33; // ! statt ±
+                        } else if (char == 180) {
+                            newchar=59; // ; statt ³
+                        } else if (char > 33) {
+                            newchar--; // Default Ceasar
                         }
                         unobfuscated += String.fromCharCode(newchar);
                     }
