@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SPON LaterPay Disabler
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      2.0
 // @description  Decodiert SPON LaterPay PayWall
 // @updateURL    https://raw.githubusercontent.com/DerVO/browserScripts/master/SPON-LaterPay-Disabler.user.js
 // @downloadURL  https://raw.githubusercontent.com/DerVO/browserScripts/master/SPON-LaterPay-Disabler.user.js
@@ -35,10 +35,10 @@ http://www.dkriesel.com/blog/2016/0703_verschluesselung_von_spiegelonline-bezahl
     // nur ausfueren, wenn Element auf Seite vorkommt
     if ($('.laterpay-under-overlay').length === 0 ) return;
 
-    // Your code here...
     // funktionier tnicht, wenn sofort ausgefuehrt, daher nach 1s ausfuhren
     setTimeout(function(){
 
+        /*
         var unobfuscate = function(element) {
             element.contents().each(function() {
                 if (this.nodeType === 3) {
@@ -75,6 +75,14 @@ http://www.dkriesel.com/blog/2016/0703_verschluesselung_von_spiegelonline-bezahl
 
         // Intro zum Reader-Modus ausblenden
         $('.js-spiegelplus-obfuscated-intro').hide();
+        */
+
+        // verwende direkt Laterpay Code
+        // http://davidebove.com/blog/2016/07/18/laterpay-bei-spiegel-online-umgehen/
+        SPLaterpay.callback.hasAccess();
+        $('.lp_mwi_payment-method-wrapper').parent().parent().fadeOut();
+        var x = $('.deobfuscated-content').parent().attr('class');
+        $('.deobfuscated-content').parent().removeClass(x);
 
         // Spiegel Plus Logo grün umfärben
         $('.article-icon.spiegelplus').css('-webkit-filter', 'hue-rotate(180deg)');
